@@ -49,6 +49,7 @@ const nodeSizeRelative = 20;    // 20
 const nodeRebound = true;       // true
 const nodeSpeed = 3.0;          // 3.0
 let mousePosition = [0,0]       // set by function
+const fontSize = 20;
 
 // Let's generate some nodes
 const nodes = Node.generateNodes(nodeCount);
@@ -190,6 +191,10 @@ function drawNodes() {
             ctx.stroke();
             ctx.fillStyle = `${color.replace('rgb', 'rgba').replace(')', ',' + opacity + ')')}`;
             ctx.fill();
+
+            ctx.font = `${node.size / nodeSize * fontSize}px monospace`;
+            ctx.textAlign = 'center';
+            ctx.fillText(`${Math.round(node.x * cw)},${Math.round(node.y * ch)}`, node.x * cw, node.y * ch + node.size);
 
             // Draw the nodes interconnection
             nodes.forEach(

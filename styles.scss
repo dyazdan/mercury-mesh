@@ -1,7 +1,7 @@
-$primary-dark: #00b0ff;
-$background-dark: #202020;
-$background-light: #00b0ff;
-$primary-light: #202020;
+$primary-dark: #ffb070;
+$background-dark: #202030;
+$background-light: $primary-dark;
+$primary-light: $background-dark;
 
 $menu-height: 1.5rem;
 
@@ -46,4 +46,10 @@ body {
 #canvas {
   width: 100%;
   height: 100%;
+}
+
+#menu-link > a {
+  text-decoration: none;
+  color: $primary-light;
+  font-weight: bolder;
 }

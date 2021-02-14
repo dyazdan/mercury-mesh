@@ -48,6 +48,7 @@ let nodeSize = 10;              // 10
 const nodeSizeRelative = 20;    // 20
 const nodeRebound = true;       // true
 const nodeSpeed = 3.0;          // 3.0
+let mousePosition = [0,0]       // set by function
 
 // Let's generate some nodes
 const nodes = Node.generateNodes(nodeCount);
@@ -58,6 +59,22 @@ const color = getComputedStyle(document.getElementById("menu")).getPropertyValue
 
 // Init the good stuff
 init();
+
+function getMousePosition(e) {
+
+    // nifty solution from https://stackoverflow.com/questions/1114465/getting-mouse-location-in-canvas
+    let mouseX, mouseY;
+
+    if (e.offsetX) {
+        mouseX = e.offsetX;
+        mouseY = e.offsetY;
+    } else if (e.layerX) {
+        mouseX = e.layerX;
+        mouseY = e.layerY;
+    }
+
+    mousePosition = [mouseX, mouseY];
+}
 
 // Initialize everything that is needed before animation begins
 function init() {
@@ -73,6 +90,10 @@ function init() {
         setNodeSize();
         updateMenu(e);
     };
+
+    canvas.onmousemove = function(e) {
+        getMousePosition(e);
+    }
 
     // Start the animation loop
     animate();
@@ -128,6 +149,13 @@ function drawNodes() {
     // Flush the canvas for redrawing
     ctx.clearRect(0, 0, cw, ch);
 
+    // Draw the mouse pointer node
+    ctx.beginPath();
+    ctx.arc(mousePosition[0], mousePosition[1],nodeSize / 2, 0, 2 * Math.PI);
+    ctx.stroke();
+    ctx.fillStyle = color;
+    ctx.fill();
+
     // Draw the nodes
     nodes.forEach(
         function (node, n, nodes) {
@@ -173,11 +201,13 @@ function drawNodes() {
                         ctx.strokeStyle = `${color.replace('rgb', 'rgba').replace(')', ',' + opacity + ')')}`;
                         ctx.moveTo(node.x * cw, node.y * ch);
                         ctx.lineTo(target.x * cw, target.y * ch);
+                        // Line to the mouse, just for fun
+                        ctx.moveTo(node.x * cw, node.y * ch);
+                        ctx.lineTo( mousePosition[0], mousePosition[1],)
                         ctx.stroke();
                     }
                 }
             )
         }
     );
-
 }
